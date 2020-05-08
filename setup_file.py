@@ -13,7 +13,7 @@ from geometry_msgs.msg import Twist
 import geometry_msgs.msg
 import numpy as np
 from turtlesim.msg import Pose
-from turtlesim.srv import Spawn, Kill
+from turtlesim.srv import Spawn, Kill, SetPen
 from turtle import Turtle, Screen
 
 class SetupExperiment: 
@@ -39,6 +39,11 @@ class SetupExperiment:
 		self.newturtle(6,2,np.pi*5/4, 'green_tea')
 
 		self.killturtle('turtle1')
+
+		#wait for Set Pen service
+		rospy.wait_for_service('/robot/set_pen')
+		self.setpen = rospy.ServiceProxy('/robot/set_pen', SetPen)
+		self.setpen(0, 0, 0, 1, 1)
 
 if __name__ == '__main__':
 	#start the new node, run setup
